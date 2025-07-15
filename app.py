@@ -44,7 +44,17 @@ s = URLSafeTimedSerializer(app.secret_key)  # Required for token generation and 
 
 # Configure upload folder
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
+# Set max content length for all requests (including multipart/form-data)
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload (increased for safety)
+
+# Configure werkzeug for large file handling
+from werkzeug.formparser import FormDataParser
+from werkzeug.http import parse_options_header
+from werkzeug.formparser import default_stream_factory
+
+# Monkey patch the default max form memory size from 1MB to 20MB
+import werkzeug
+werkzeug.formparser.DEFAULT_MAX_FORM_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB for PDF files
 
 # Add custom Jinja2 filter for JSON parsing
 @app.template_filter('from_json')
