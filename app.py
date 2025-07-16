@@ -478,6 +478,8 @@ def details():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Clear any existing flash messages for this page
+    session.pop('_flashes', None)
     if request.method == 'POST':
         # Fetch the username part from the form input
         username = request.form['loginId']
