@@ -1491,19 +1491,9 @@
         dropdown.appendChild(option);
     }
     
-    // Add onchange event to automatically submit form when selection changes
-    dropdown.addEventListener('change', function() {
-        if(validateForm()) {
-            document.getElementById('academicForm').submit();
-        }
-    });
     
-    // If there's no selected year already (no form data loaded yet), auto-submit with the first option
-    if (!window.location.href.includes('search_pastforms') && dropdown.options.length > 0) {
-        setTimeout(function() {
-            document.getElementById('academicForm').submit();
-        }, 300); // Small delay to ensure DOM is ready
-    }
+    
+    
 }
 
 // Call the function to populate the dropdown when the page loads
