@@ -154,11 +154,11 @@
         
         <div class="assessment-box">
             <label>Assessment by HOD:</label>
-            <p>{{ assessments['hodas1'] }}</p>
+            <p>{{ assessments['hodas1']|int }}</p>
             <label>HOD Remarks:</label>
             <p>{{ assessments['hodfeed1'] }}</p>
             <label>Assessment by Principal:</label>
-            <p>{{ assessments['prinas1'] }}</p>
+            <p>{{ assessments['prinas1']|int }}</p>
             <label>Principal Remarks:</label>
             <p>{{ assessments['prinfeed1'] }}</p>
         </div>
@@ -171,11 +171,11 @@
         
         <div class="assessment-box">
             <label>Assessment by HOD:</label>
-            <p>{{ assessments['hodas2'] }}</p>
+            <p>{{ assessments['hodas2']|int }}</p>
             <label>HOD Remarks:</label>
             <p>{{ assessments['hodfeed2'] }}</p>
             <label>Assessment by Principal:</label>
-            <p>{{ assessments['prinas2'] }}</p>
+            <p>{{ assessments['prinas2']|int }}</p>
             <label>Principal Remarks:</label>
             <p>{{ assessments['prinfeed2'] }}</p>
         </div>
@@ -188,11 +188,11 @@
         
         <div class="assessment-box">
             <label>Assessment by HOD:</label>
-            <p>{{ assessments['hodas3'] }}</p>
+            <p>{{ assessments['hodas3']|int }}</p>
             <label>HOD Remarks:</label>
             <p>{{ assessments['hodfeed3'] }}</p>
             <label>Assessment by Principal:</label>
-            <p>{{ assessments['prinas3'] }}</p>
+            <p>{{ assessments['prinas3']|int }}</p>
             <label>Principal Remarks:</label>
             <p>{{ assessments['prinfeed3'] }}</p>
         </div>
@@ -205,11 +205,11 @@
         
         <div class="assessment-box">
             <label>Assessment by HOD:</label>
-            <p>{{ assessments['hodas4'] }}</p>
+            <p>{{ assessments['hodas4']|int }}</p>
             <label>HOD Remarks:</label>
             <p>{{ assessments['hodfeed4'] }}</p>
             <label>Assessment by Principal:</label>
-            <p>{{ assessments['prinas4'] }}</p>
+            <p>{{ assessments['prinas4']|int }}</p>
             <label>Principal Remarks:</label>
             <p>{{ assessments['prinfeed4'] }}</p>
         </div>
@@ -223,11 +223,11 @@
         
         <div class="assessment-box">
             <label>Assessment by HOD:</label>
-            <p>{{ assessments['hodas6']|float|round(2) }}</p>
+            <p>{{ assessments['hodas6']|int }}</p>
             <label>HOD Remarks:</label>
             <p>{{ assessments['hodfeed6'] }}</p>
             <label>Assessment by Principal:</label>
-            <p>{{ assessments['prinas6'] }}</p>
+            <p>{{ assessments['prinas6']|int }}</p>
             <label>Principal Remarks:</label>
             <p>{{ assessments['prinfeed6'] }}</p>
         </div>
@@ -252,51 +252,51 @@
                 <tr>
                     <td>Teaching Process</td>
                     <td>25</td>
-                    <td>{{ points_data['teaching']|float|round(2) }}</td>
-                    <td>{{ assessments['hodas1']|float|round(2) }}</td>
-                    <td>{{ assessments['prinas1']|float|round(2) }}</td>
+                    <td>{{ points_data['teaching']|int }}</td>
+                    <td>{{ assessments['hodas1']|int }}</td>
+                    <td>{{ assessments['prinas1']|int }}</td>
                 </tr>
                 <tr>
                     <td>Students' Feedback</td>
                     <td>25</td>
-                    <td>{{ points_data['feedback']|float|round(2) }}</td>
-                    <td>{{ assessments['hodas2']|float|round(2) }}</td>
-                    <td>{{ assessments['prinas2']|float|round(2) }}</td>
+                    <td>{{ points_data['feedback']|int }}</td>
+                    <td>{{ assessments['hodas2']|int }}</td>
+                    <td>{{ assessments['prinas2']|int }}</td>
                 </tr>
                 <tr>
                     <td>Departmental Activities</td>
                     <td>20</td>
-                    <td>{{ points_data['dept']|float|round(2) }}</td>
-                    <td>{{ assessments['hodas3']|float|round(2) }}</td>
-                    <td>{{ assessments['prinas3']|float|round(2) }}</td>
+                    <td>{{ points_data['dept']|int }}</td>
+                    <td>{{ assessments['hodas3']|int }}</td>
+                    <td>{{ assessments['prinas3']|int }}</td>
                 </tr>
                 <tr>
                     <td>Institute Activity</td>
                     <td>10</td>
-                    <td>{{ points_data['institute']|float|round(2) }}</td>
-                    <td>{{ assessments['hodas4']|float|round(2) }}</td>
-                    <td>{{ assessments['prinas4']|float|round(2) }}</td>
+                    <td>{{ points_data['institute']|int }}</td>
+                    <td>{{ assessments['hodas4']|int }}</td>
+                    <td>{{ assessments['prinas4']|int }}</td>
                 </tr>
                 <tr>
                     <td>ACR</td>
                     <td>10</td>
-                    <td>{{ points_data['acr']|float|round(2) }}</td>
-                    <td>{{ finalacr_value|float|round(2) }}</td>
-                    <td>{{ assessments['prinas5']|float|round(2) }}</td>
+                    <td>{{ points_data['acr']|int }}</td>
+                    <td>{{ finalacr_value|int }}</td>
+                    <td>{{ assessments['prinas5']|int }}</td>
                 </tr>
                 <tr>
                     <td>Contribution to Society</td>
                     <td>10</td>
-                    <td>{{ points_data['society']|float|round(2) }}</td>
-                    <td>{{ assessments['hodas6']|float|round(2) }}</td>
-                    <td>{{ assessments['prinas6']|float|round(2) }}</td>
+                    <td>{{ points_data['society']|int }}</td>
+                    <td>{{ assessments['hodas6']|int }}</td>
+                    <td>{{ assessments['prinas6']|int }}</td>
                 </tr>
                 <tr class="total-row">
                     <td><strong>Total</strong></td>
                     <td><strong>100</strong></td>
-                    <td><strong>{{ total_earned_points|float|round(2) }}</strong></td>
-                    <td><strong>{{ total_hod_points|float|round(2) }}</strong></td>
-                    <td><strong>{{ total_principal_points|float|round(2) }}</strong></td>
+                    <td><strong>{{ total_earned_points|int }}</strong></td>
+                    <td><strong>{{ total_hod_points|int }}</strong></td>
+                    <td><strong>{{ total_principal_points|int }}</strong></td>
                 </tr>
             </tbody>
         </table>

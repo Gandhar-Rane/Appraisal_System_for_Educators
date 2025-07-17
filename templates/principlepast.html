@@ -30,6 +30,22 @@
     }
 }
 
+.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.invalid-feedback {
+    display: block !important;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
         body {
             background: url('/static/bg.jpg') no-repeat center center fixed;
@@ -298,6 +314,9 @@
         <div class="assessment-box mt-3">
             <label>Assessment by Principal:</label>
             <input type="number" class="form-control" id="prinas1" name="prinas1" min="0" max="25" value="{{ assessments['prinas1'] }}">
+            <small id="prinas1Warning" class="form-text text-danger" style="display: none;">
+                Please enter a value between 0 and 25.
+            </small>
             <div class="mt-2">
                 <label>Principal Remarks:</label>
                 <textarea class="form-control" id="prinfeed1" name="prinfeed1" rows="2">{{ assessments['prinfeed1'] }}</textarea>
@@ -359,6 +378,9 @@
         <div class="assessment-box mt-3">
             <label>Assessment by Principal:</label>
             <input type="number" class="form-control" id="prinas2" name="prinas2" min="0" max="25" value="{{ assessments['prinas2'] }}">
+            <small id="prinas2Warning" class="form-text text-danger" style="display: none;">
+                Please enter a value between 0 and 25.
+            </small>
             <div class="mt-2">
                 <label>Principal Remarks:</label>
                 <textarea class="form-control" id="prinfeed2" name="prinfeed2" rows="2">{{ assessments['prinfeed2'] }}</textarea>
@@ -427,6 +449,9 @@
         <div class="assessment-box mt-3">
             <label>Assessment by Principal:</label>
             <input type="number" class="form-control" id="prinas3" name="prinas3" min="0" max="20" value="{{ assessments['prinas3'] }}">
+            <small id="prinas3Warning" class="form-text text-danger" style="display: none;">
+                Please enter a value between 0 and 20.
+            </small>
             <div class="mt-2">
                 <label>Principal Remarks:</label>
                 <textarea class="form-control" id="prinfeed3" name="prinfeed3" rows="2">{{ assessments['prinfeed3'] }}</textarea>
@@ -492,6 +517,9 @@
     <div class="assessment-box mt-3">
         <label>Assessment by Principal:</label>
         <input type="number" class="form-control" id="prinas4" name="prinas4" min="0" max="10" value="{{ assessments['prinas4'] }}">
+        <small id="prinas4Warning" class="form-text text-danger" style="display: none;">
+            Please enter a value between 0 and 10.
+        </small>
         <div class="mt-2">
             <label>Principal Remarks:</label>
             <textarea class="form-control" id="prinfeed4" name="prinfeed4" rows="2">{{ assessments['prinfeed4'] }}</textarea>
@@ -1239,6 +1267,9 @@
     <div class="assessment-box mt-3">
         <label>Assessment by Principal:</label>
         <input type="number" class="form-control" id="prinas5" name="prinas5" min="0" max="10" value="{{ assessments['prinas5'] }}">
+        <small id="prinas5Warning" class="form-text text-danger" style="display: none;">
+            Please enter a value between 0 and 10.
+        </small>
         <div class="mt-2">
             <label>Principal Remarks:</label>
             <textarea class="form-control" id="prinfeed5" name="prinfeed5" rows="2">{{ assessments['prinfeed5'] }}</textarea>
@@ -1432,6 +1463,9 @@
                 <div class="assessment-box mt-3">
                     <label>Assessment by Principal:</label>
                     <input type="number" class="form-control principal-input" id="prinas6" name="prinas6" min="0" max="10" value="{{ assessments['prinas6'] }}">
+                    <small id="prinas6Warning" class="form-text text-danger" style="display: none;">
+                        Please enter a value between 0 and 10.
+                    </small>
                     <div class="mt-2">
                         <label>Principal Remarks:</label>
                         <textarea class="form-control" id="prinfeed6" name="prinfeed6" rows="2">{{ assessments['prinfeed6'] }}</textarea>
@@ -1442,6 +1476,93 @@
             {% endif %}
             
  <pre></pre>    
+
+ <script>
+    // Add validation for all Principal assessment inputs
+    const prinas1Input = document.getElementById('prinas1');
+    const prinas1Warning = document.getElementById('prinas1Warning');
+    
+    prinas1Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 25) {
+            prinas1Input.classList.add('is-invalid');
+            prinas1Warning.style.display = 'block';
+        } else {
+            prinas1Input.classList.remove('is-invalid');
+            prinas1Warning.style.display = 'none';
+        }
+    });
+
+    const prinas2Input = document.getElementById('prinas2');
+    const prinas2Warning = document.getElementById('prinas2Warning');
+    
+    prinas2Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 25) {
+            prinas2Input.classList.add('is-invalid');
+            prinas2Warning.style.display = 'block';
+        } else {
+            prinas2Input.classList.remove('is-invalid');
+            prinas2Warning.style.display = 'none';
+        }
+    });
+
+    const prinas3Input = document.getElementById('prinas3');
+    const prinas3Warning = document.getElementById('prinas3Warning');
+    
+    prinas3Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 20) {
+            prinas3Input.classList.add('is-invalid');
+            prinas3Warning.style.display = 'block';
+        } else {
+            prinas3Input.classList.remove('is-invalid');
+            prinas3Warning.style.display = 'none';
+        }
+    });
+
+    const prinas4Input = document.getElementById('prinas4');
+    const prinas4Warning = document.getElementById('prinas4Warning');
+    
+    prinas4Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 10) {
+            prinas4Input.classList.add('is-invalid');
+            prinas4Warning.style.display = 'block';
+        } else {
+            prinas4Input.classList.remove('is-invalid');
+            prinas4Warning.style.display = 'none';
+        }
+    });
+
+    const prinas5Input = document.getElementById('prinas5');
+    const prinas5Warning = document.getElementById('prinas5Warning');
+    
+    prinas5Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 10) {
+            prinas5Input.classList.add('is-invalid');
+            prinas5Warning.style.display = 'block';
+        } else {
+            prinas5Input.classList.remove('is-invalid');
+            prinas5Warning.style.display = 'none';
+        }
+    });
+
+    const prinas6Input = document.getElementById('prinas6');
+    const prinas6Warning = document.getElementById('prinas6Warning');
+    
+    prinas6Input.addEventListener('input', function () {
+        const value = parseFloat(this.value);
+        if (isNaN(value) || value < 0 || value > 10) {
+            prinas6Input.classList.add('is-invalid');
+            prinas6Warning.style.display = 'block';
+        } else {
+            prinas6Input.classList.remove('is-invalid');
+            prinas6Warning.style.display = 'none';
+        }
+    });
+</script>
 
 
 <style>
@@ -1665,102 +1786,242 @@
  <pre></pre>
  
  {% if points_data %}
-<div class="table-container">
-    <h3>Final Score:</h3>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Criteria</th>
-                <th>Maximum Points</th>
-                <th>Points Earned</th>
-                <th>Points Given by Head of the Department</th>
-                <th>Points Given by Principal</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Teaching Process</td>
-                <td>25</td>
-                <td>{{ points_data['teaching']|float|round(2) }}</td>
-                <td class="hod-score">{{ assessments['hodas1']|float|round(2) }}</td>
-                <td class="principal-score" id="princScore1">{{ assessments['prinas1']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <td>Students' Feedback</td>
-                <td>25</td>
-                <td>{{ points_data['feedback']|float|round(2) }}</td>
-                <td class="hod-score">{{ assessments['hodas2']|float|round(2) }}</td>
-                <td class="principal-score" id="princScore2">{{ assessments['prinas2']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <td>Departmental Activities</td>
-                <td>20</td>
-                <td>{{ points_data['dept']|float|round(2) }}</td>
-                <td class="hod-score">{{ assessments['hodas3']|float|round(2) }}</td>
-                <td class="principal-score" id="princScore3">{{ assessments['prinas3']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <td>Institute Activity</td>
-                <td>10</td>
-                <td>{{ points_data['institute']|float|round(2) }}</td>
-                <td class="hod-score">{{ assessments['hodas4']|float|round(2) }}</td>
-                <td class="principal-score" id="princScore4">{{ assessments['prinas4']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <td>ACR</td>
-                <td>10</td>
-                <td>{{ points_data['acr']|float|round(2) }}</td>
-                <td class="hod-score">{{ finalacr_value|float|round(2) }}</td>
-                <td class="principal-score" id="princScore5">{{ assessments['prinas5']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <td>Contribution to Society</td>
-                <td>10</td>
-                <td>{{ points_data['society']|float|round(2) }}</td>
-                <td class="hod-score">{{ assessments['hodas6']|float|round(2) }}</td>
-                <td class="principal-score" id="princScore6">{{ assessments['prinas6']|float|round(2) }}</td>
-            </tr>
-            <tr>
-                <th>Total</th>
-                <th>100</th>
-                <th>{{ (points_data['teaching']|float + points_data['feedback']|float + points_data['dept']|float 
-                    + points_data['institute']|float + points_data['acr']|float + points_data['society']|float)|round(2) }}</th>
-                <th id="hodTotalScore">0.00</th>
-                <th id="princTotalScore">{{ (assessments['prinas1']|float + assessments['prinas2']|float + assessments['prinas3']|float 
-                    + assessments['prinas4']|float + assessments['prinas5']|float + assessments['prinas6']|float)|round(2) }}</th>
-            </tr>
-        </tbody>
-    </table>
+ <div class="table-container">
+     <h3>Final Score:</h3>
+     <table class="table table-bordered">
+         <thead>
+             <tr>
+                 <th>Criteria</th>
+                 <th>Maximum Points</th>
+                 <th>Points Earned</th>
+                 <th>Points Given by Head of the Department</th>
+                 <th>Points Given by Principal</th>
+             </tr>
+         </thead>
+         <tbody>
+             <tr>
+                 <td>Teaching Process</td>
+                 <td>25</td>
+                 <td>{{ (points_data['teaching']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (assessments['hodas1']|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore1">{{ (assessments['prinas1']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <td>Students' Feedback</td>
+                 <td>25</td>
+                 <td>{{ (points_data['feedback']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (assessments['hodas2']|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore2">{{ (assessments['prinas2']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <td>Departmental Activities</td>
+                 <td>20</td>
+                 <td>{{ (points_data['dept']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (assessments['hodas3']|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore3">{{ (assessments['prinas3']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <td>Institute Activity</td>
+                 <td>10</td>
+                 <td>{{ (points_data['institute']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (assessments['hodas4']|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore4">{{ (assessments['prinas4']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <td>ACR</td>
+                 <td>10</td>
+                 <td>{{ (points_data['acr']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (finalacr_value|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore5">{{ (assessments['prinas5']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <td>Contribution to Society</td>
+                 <td>10</td>
+                 <td>{{ (points_data['society']|float + 0.5)|int }}</td>
+                 <td class="hod-score">{{ (assessments['hodas6']|float + 0.5)|int }}</td>
+                 <td class="principal-score" id="princScore6">{{ (assessments['prinas6']|float + 0.5)|int }}</td>
+             </tr>
+             <tr>
+                 <th>Total</th>
+                 <th>100</th>
+                 <th>{{ ((points_data['teaching']|float + points_data['feedback']|float + points_data['dept']|float 
+                     + points_data['institute']|float + points_data['acr']|float + points_data['society']|float) + 0.5)|int }}</th>
+                 <th id="hodTotalScore">0</th>
+                 <th id="princTotalScore">{{ ((assessments['prinas1']|float + assessments['prinas2']|float + assessments['prinas3']|float 
+                     + assessments['prinas4']|float + assessments['prinas5']|float + assessments['prinas6']|float) + 0.5)|int }}</th>
+             </tr>
+         </tbody>
+     </table>
+ 
 <script>
 function updateHodTotal() {
     // Get all HOD score cells
     var hodCells = document.querySelectorAll('.hod-score');
     var total = 0;
     
-    // Calculate total from cells
+    // Calculate total from cells with proper rounding
     hodCells.forEach(function(cell) {
         var val = parseFloat(cell.textContent) || 0;
         total += val;
     });
     
+    // Apply rounding logic: 2.5 or above rounds to 3
+    var roundedTotal = Math.round(total);
+    
     // Update the total cell
     var totalCell = document.getElementById('hodTotalScore');
     if (totalCell) {
-        totalCell.textContent = total.toFixed(2);
+        totalCell.textContent = roundedTotal;
     }
+}
+
+// Update principal total when principal values change
+function updatePrincipalTotal() {
+    const score1 = Math.round(parseFloat($("#prinas1").val()) || 0);
+    const score2 = Math.round(parseFloat($("#prinas2").val()) || 0);
+    const score3 = Math.round(parseFloat($("#prinas3").val()) || 0);
+    const score4 = Math.round(parseFloat($("#prinas4").val()) || 0);
+    const score5 = Math.round(parseFloat($("#prinas5").val()) || 0);
+    const score6 = Math.round(parseFloat($("#prinas6").val()) || 0);
+    
+    const totalScore = score1 + score2 + score3 + score4 + score5 + score6;
+    $("#princTotalScore").text(totalScore);
+    
+    // Update the individual principal score cells in the table
+    $("#princScore1").text(score1);
+    $("#princScore2").text(score2);
+    $("#princScore3").text(score3);
+    $("#princScore4").text(score4);
+    $("#princScore5").text(score5);
+    $("#princScore6").text(score6);
 }
 
 // Run after a short delay to ensure all content is loaded
 setTimeout(updateHodTotal, 100);
+setTimeout(updatePrincipalTotal, 100);
 
 // Also run when the page is fully loaded
 window.addEventListener('load', function() {
     updateHodTotal();
+    updatePrincipalTotal();
+});
+
+// Update totals when principal inputs change
+$(document).ready(function() {
+    $('#prinas1, #prinas2, #prinas3, #prinas4, #prinas5, #prinas6').on('input', function() {
+        updatePrincipalTotal();
+    });
 });
 
 // Run one more time after everything else has had a chance to run
-setTimeout(updateHodTotal, 500);
+setTimeout(function() {
+    updateHodTotal();
+    updatePrincipalTotal();
+}, 500);
 </script>
+
+<script>
+    function updateHodTotal() {
+        console.log('Updating HOD total...');
+        
+        // Get all HOD score cells
+        var hodCells = document.querySelectorAll('.hod-score');
+        var total = 0;
+        
+        console.log('Found HOD cells:', hodCells.length);
+        
+        // Calculate total from cells with proper rounding
+        hodCells.forEach(function(cell, index) {
+            var val = parseFloat(cell.textContent) || 0;
+            console.log(`HOD cell ${index}: ${cell.textContent} -> ${val}`);
+            total += val;
+        });
+        
+        // Apply rounding logic: 2.5 or above rounds to 3
+        var roundedTotal = Math.round(total);
+        console.log('HOD total before rounding:', total, 'after rounding:', roundedTotal);
+        
+        // Update the total cell
+        var totalCell = document.getElementById('hodTotalScore');
+        if (totalCell) {
+            totalCell.textContent = roundedTotal;
+            console.log('Updated HOD total to:', roundedTotal);
+        } else {
+            console.error('HOD total cell not found');
+        }
+    }
+    
+    // More robust initialization
+    function initializeScores() {
+        console.log('Initializing scores...');
+        updateHodTotal();
+        updatePrincipalTotal();
+    }
+    
+    // Update principal total when principal values change
+    function updatePrincipalTotal() {
+        const score1 = Math.round(parseFloat($("#prinas1").val()) || 0);
+        const score2 = Math.round(parseFloat($("#prinas2").val()) || 0);
+        const score3 = Math.round(parseFloat($("#prinas3").val()) || 0);
+        const score4 = Math.round(parseFloat($("#prinas4").val()) || 0);
+        const score5 = Math.round(parseFloat($("#prinas5").val()) || 0);
+        const score6 = Math.round(parseFloat($("#prinas6").val()) || 0);
+        
+        const totalScore = score1 + score2 + score3 + score4 + score5 + score6;
+        $("#princTotalScore").text(totalScore);
+        
+        // Update the individual principal score cells in the table
+        $("#princScore1").text(score1);
+        $("#princScore2").text(score2);
+        $("#princScore3").text(score3);
+        $("#princScore4").text(score4);
+        $("#princScore5").text(score5);
+        $("#princScore6").text(score6);
+    }
+    
+    // Multiple initialization attempts to handle timing issues
+    $(document).ready(function() {
+        console.log('Document ready');
+        initializeScores();
+        
+        // Update totals when principal inputs change
+        $('#prinas1, #prinas2, #prinas3, #prinas4, #prinas5, #prinas6').on('input', function() {
+            updatePrincipalTotal();
+        });
+    });
+    
+    // Additional initialization on window load
+    window.addEventListener('load', function() {
+        console.log('Window loaded');
+        setTimeout(initializeScores, 100);
+    });
+    
+    // Final fallback initialization
+    setTimeout(function() {
+        console.log('Final initialization attempt');
+        initializeScores();
+    }, 1000);
+    
+    // Observer to watch for DOM changes (in case content loads dynamically)
+    if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    var hodTotal = document.getElementById('hodTotalScore');
+                    if (hodTotal && (hodTotal.textContent === '0' || hodTotal.textContent === '0.00')) {
+                        setTimeout(updateHodTotal, 100);
+                    }
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+    </script>
+    
 
     <!-- Principal Feedback Section -->
 <div class="assessment-box mt-4">                  
@@ -1800,41 +2061,7 @@ setTimeout(updateHodTotal, 500);
         transition: all 0.3s ease;">
         <i class="fas fa-check"></i> Approve
     </button>
-<script>
-// Attach only ONE event handler for Approve button (no inline onclick)
-document.getElementById('approveBtn').onclick = function(event) {
-    if (event) event.preventDefault();
-    const btn = this;
-    console.log('Approve clicked');
-    btn.disabled = true; // Prevent double click
-    fetch('/giveappraisal', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            user_id: "{{ user_id }}",
-            form_id: "{{ form_id }}",
-            acad_years: "{{ selected_year }}"
-        })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-        btn.disabled = false;
-        if (data.status === 'success' || (data.message && data.message.includes('email sent'))) {
-            alert('Appraisal approved and email sent!');
-        } else {
-            alert(' ' + (data.message || 'Unknown error'));
-        }
-    })
-    .catch(err => {
-        btn.disabled = false;
-        alert('Error: ' + err);
-    });
-};
-</script>
+
 <!-- Ensure there is NO other approveAndEmail or similar handler attached anywhere else -->
         <a href="/principlefaculty" class="btn btn-primary">
             <i class="fas fa-home"></i> Home
@@ -1934,80 +2161,117 @@ document.getElementById('approveBtn').onclick = function(event) {
     // Ensure USER_ID is available globally
     window.USER_ID = window.USER_ID || '{{ user_id }}';
 
-    function showConfirmDialog(userId) {
-        console.log('showConfirmDialog called with userId:', userId);
-        if (confirm('Are you sure you want to approve this assessment? A PDF will be generated and emailed to the faculty member.')) {
-            // Proceed directly 
-            hideConfirmDialog();
-        }
+    // Enhanced approve function with validation
+function showConfirmDialog(userId) {
+    console.log('showConfirmDialog called with userId:', userId);
+    
+    // Validate assessments before showing dialog
+    const validation = validatePrincipalAssessments();
+    
+    if (!validation.isValid) {
+        alert('Please fix the following errors before approving:\n\n' + validation.errors.join('\n'));
+        return;
     }
+    
+    // Show confirmation dialog
+    const dialog = document.getElementById('confirmDialog');
+    if (dialog) {
+        dialog.style.display = 'flex';
+        dialog.style.opacity = '0';
+        setTimeout(() => {
+            dialog.style.opacity = '1';
+        }, 10);
+    }
+}
 
-    function hideConfirmDialog() {
-        const dialog = document.getElementById('confirmDialog');
-        if (dialog) {
-            dialog.style.opacity = '0';
-            setTimeout(() => {
-                dialog.style.display = 'none';
-            }, 300);
-        }
+    // Replace your existing hideConfirmDialog function with this:
+function hideConfirmDialog() {
+    const dialog = document.getElementById('confirmDialog');
+    if (dialog) {
+        dialog.style.opacity = '0';
+        setTimeout(() => {
+            dialog.style.display = 'none';
+        }, 300);
     }
+    
+    // Reset the confirm button when dialog is hidden
+    const confirmBtn = document.getElementById('confirmApproveBtn');
+    if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve & Send';
+    }
+}
 
     // Initialize when DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded - initializing event listeners');
+    // Replace the existing DOMContentLoaded event listener with this:
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded - initializing event listeners');
+    
+    // 1. Handle Approve button click
+    const approveBtn = document.getElementById('approveBtn');
+    if (approveBtn) {
+        console.log('Approve button found, adding click handler');
+        // Remove any existing listeners first
+        approveBtn.replaceWith(approveBtn.cloneNode(true));
+        const newApproveBtn = document.getElementById('approveBtn');
         
-        // 1. Handle Approve button click
-        const approveBtn = document.getElementById('approveBtn');
-        if (approveBtn) {
-            console.log('Approve button found, adding click handler');
-            approveBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('Approve button clicked');
-                const userId = this.dataset.userId || window.USER_ID || '{{ user_id }}';
-                console.log('User ID:', userId);
-                showConfirmDialog(userId);
-                return false;
-            });
-        } else {
-            console.error('Approve button not found in DOM');
-        }
+        newApproveBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Approve button clicked');
+            const userId = this.dataset.userId || window.USER_ID || '{{ user_id }}';
+            console.log('User ID:', userId);
+            showConfirmDialog(userId);
+            return false;
+        });
+    } else {
+        console.error('Approve button not found in DOM');
+    }
+    
+    // 2. Handle Confirm Approve button in dialog
+    const confirmApproveBtn = document.getElementById('confirmApproveBtn');
+    if (confirmApproveBtn) {
+        console.log('Confirm Approve button found, adding click handler');
+        // Remove any existing listeners first
+        confirmApproveBtn.replaceWith(confirmApproveBtn.cloneNode(true));
+        const newConfirmApproveBtn = document.getElementById('confirmApproveBtn');
         
-        // 2. Handle Confirm Approve button in dialog
-        const confirmApproveBtn = document.getElementById('confirmApproveBtn');
-        if (confirmApproveBtn) {
-            console.log('Confirm Approve button found, adding click handler');
-            confirmApproveBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('Confirm Approve button clicked');
-                generatePDFAndApprove();
-                return false;
-            });
-        } else {
-            console.error('Confirm Approve button not found in DOM');
-        }
-        
-        // 3. Handle dialog close events
-        const dialog = document.getElementById('confirmDialog');
-        if (dialog) {
-            // Close when clicking outside dialog
-            dialog.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    console.log('Clicked outside dialog, closing');
-                    hideConfirmDialog();
-                }
-            });
+        newConfirmApproveBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Confirm Approve button clicked');
             
-            // Close with Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    console.log('Escape key pressed, closing dialog');
-                    hideConfirmDialog();
-                }
-            });
-        } else {
-            console.error('Confirmation dialog not found in DOM');
-        }
-    });
+            // Disable the button immediately to prevent double clicks
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            generatePDFAndApprove();
+            return false;
+        });
+    } else {
+        console.error('Confirm Approve button not found in DOM');
+    }
+    
+    // 3. Handle dialog close events
+    const dialog = document.getElementById('confirmDialog');
+    if (dialog) {
+        // Close when clicking outside dialog
+        dialog.addEventListener('click', function(e) {
+            if (e.target === this) {
+                console.log('Clicked outside dialog, closing');
+                hideConfirmDialog();
+            }
+        });
+        
+        // Close with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                console.log('Escape key pressed, closing dialog');
+                hideConfirmDialog();
+            }
+        });
+    } else {
+        console.error('Confirmation dialog not found in DOM');
+    }
+});
 
     function collectAssessmentData() {
         console.log('Starting to collect assessment data...');
@@ -2116,41 +2380,77 @@ document.getElementById('approveBtn').onclick = function(event) {
         };
     }
 
-    async function approveAndEmail(userId) {
-        console.log('approveAndEmail called with userId:', userId);
-        document.getElementById('loadingOverlay').style.display = 'flex';
+    // Enhanced generatePDFAndApprove function with validation
+// Add this variable at the top of your script to track processing state
+let isProcessing = false;
+
+// Replace your existing generatePDFAndApprove function with this:
+async function generatePDFAndApprove() {
+    console.log('generatePDFAndApprove called');
+    
+    // Prevent multiple simultaneous requests
+    if (isProcessing) {
+        console.log('Already processing, ignoring duplicate request');
+        return;
+    }
+    
+    isProcessing = true;
+    
+    // Validate assessments before proceeding
+    const validation = validatePrincipalAssessments();
+    
+    if (!validation.isValid) {
+        alert('Please fix the following errors before approving:\n\n' + validation.errors.join('\n'));
+        hideConfirmDialog();
+        isProcessing = false;
+        return;
+    }
+    
+    hideConfirmDialog();
+    document.getElementById('loadingOverlay').style.display = 'flex';
+    
+    try {
+        const userId = window.USER_ID || '{{ user_id }}';
+        console.log('Proceeding with approval for user:', userId);
         
-        try {
-            const response = await fetch('/giveappraisal', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    user_id: userId,
-                    action: 'approve_and_email'
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (response.ok) {
-                console.log('Approval and email successful:', result);
-                alert(result.message || 'Assessment approved and email sent successfully!');
-                // Redirect after a short delay
-                setTimeout(() => {
-                    window.location.href = result.redirect_url || '/principlefaculty?approved=1';
-                }, 1500);
-            } else {
-                console.error('Approval failed:', response.status, result);
-                throw new Error(result.message || 'Failed to approve assessment');
-            }
-        } catch (error) {
-            console.error('Error in approveAndEmail:', error);
-            alert('Error: ' + (error.message || 'Failed to process approval. Please try again.'));
-        } finally {
-            document.getElementById('loadingOverlay').style.display = 'none';
+        const response = await fetch('/giveappraisal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                user_id: userId,
+                form_id: '{{ form_id }}',
+                acad_years: '{{ selected_year }}',
+                action: 'approve_and_email'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            console.log('Approval and email successful:', result);
+            alert(result.message || 'Assessment approved and email sent successfully!');
+            setTimeout(() => {
+                window.location.href = result.redirect_url || '/principlefaculty?approved=1';
+            }, 1500);
+        } else {
+            console.error('Approval failed:', response.status, result);
+            throw new Error(result.message || 'Failed to approve assessment');
+        }
+    } catch (error) {
+        console.error('Error in generatePDFAndApprove:', error);
+        alert('Error: ' + (error.message || 'Failed to process approval. Please try again.'));
+    } finally {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        isProcessing = false; // Reset the flag
+        
+        // Re-enable the button if still on the page
+        const confirmBtn = document.getElementById('confirmApproveBtn');
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve & Send';
         }
     }
-
+}
 
 </script>
 
@@ -2187,6 +2487,60 @@ document.getElementById('approveBtn').onclick = function(event) {
 window.onload = generateAcademicYears;
 
 
+// Enhanced validation function to check all principal assessments
+function validatePrincipalAssessments() {
+    const validationRules = [
+        { id: 'prinas1', min: 0, max: 25, name: 'Teaching Process' },
+        { id: 'prinas2', min: 0, max: 25, name: 'Students\' Feedback' },
+        { id: 'prinas3', min: 0, max: 20, name: 'Departmental Activities' },
+        { id: 'prinas4', min: 0, max: 10, name: 'Institute Activity' },
+        { id: 'prinas5', min: 0, max: 10, name: 'ACR' },
+        { id: 'prinas6', min: 0, max: 10, name: 'Contribution to Society' }
+    ];
+
+    let isValid = true;
+    let errorMessages = [];
+
+    validationRules.forEach(rule => {
+        const input = document.getElementById(rule.id);
+        const value = parseFloat(input.value);
+        
+        if (isNaN(value) || value < rule.min || value > rule.max) {
+            isValid = false;
+            errorMessages.push(`${rule.name}: Must be between ${rule.min} and ${rule.max}`);
+            
+            // Add visual feedback
+            input.classList.add('is-invalid');
+            const warningElement = document.getElementById(`${rule.id}Warning`);
+            if (warningElement) {
+                warningElement.style.display = 'block';
+            }
+        } else {
+            // Remove visual feedback if valid
+            input.classList.remove('is-invalid');
+            const warningElement = document.getElementById(`${rule.id}Warning`);
+            if (warningElement) {
+                warningElement.style.display = 'none';
+            }
+        }
+    });
+
+    // Check if feedback is provided
+    const feedback = document.getElementById('principalFeedback');
+    if (feedback && (!feedback.value || feedback.value.trim() === '')) {
+        isValid = false;
+        errorMessages.push('Principal feedback is required');
+        feedback.classList.add('is-invalid');
+    } else if (feedback) {
+        feedback.classList.remove('is-invalid');
+    }
+
+    return {
+        isValid: isValid,
+        errors: errorMessages
+    };
+}
+
 function validateForm() {
     const year = document.getElementById('academicYear').value;
     if (!year) {
@@ -2209,8 +2563,15 @@ function updatePrincipalTotal() {
     $("#princTotalScore").text(totalScore);
 }
 
-// This function is for saving principal assessment data
+// Enhanced save function with validation
 function savePrincipalAssessment(isSubmitting = false) {
+    const validation = validatePrincipalAssessments();
+    
+    if (!validation.isValid) {
+        alert('Please fix the following errors before saving:\n\n' + validation.errors.join('\n'));
+        return;
+    }
+
     // Gather form data
     const formData = {
         user_id: "{{ user_id }}",
@@ -2242,6 +2603,10 @@ function savePrincipalAssessment(isSubmitting = false) {
             
             if (!isSubmitting) {
                 alert("Principal assessment saved successfully!");
+                // Refresh the page after a short delay to show the success message
+                setTimeout(function() {
+                    location.reload();
+                }, 500);
             } else {
                 alert("Assessment submitted successfully!");
                 window.location.href = "/principlefaculty";
@@ -2254,28 +2619,43 @@ function savePrincipalAssessment(isSubmitting = false) {
 }
 
 // Event handlers
+// Enhanced event handlers with validation
 $(document).ready(function() {
     // Calculate the total score on page load
     updatePrincipalTotal();
     
-    // Save button click
-    $("#savePrincipalAssessment").on("click", function() {
-        // Validate that we have a feedback entry
-        const feedback = $("#principalFeedback").val();
-        if (!feedback || feedback.trim() === '') {
-            alert("Please provide feedback before saving.");
-            return;
+    // Add real-time validation on input change
+    const validationInputs = ['prinas1', 'prinas2', 'prinas3', 'prinas4', 'prinas5', 'prinas6'];
+    validationInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', function() {
+                // Trigger validation for this specific input
+                validatePrincipalAssessments();
+                updatePrincipalTotal();
+            });
         }
-        
+    });
+    
+    // Add validation for feedback field
+    const feedbackInput = document.getElementById('principalFeedback');
+    if (feedbackInput) {
+        feedbackInput.addEventListener('input', function() {
+            validatePrincipalAssessments();
+        });
+    }
+    
+    // Save button click with validation
+    $("#savePrincipalAssessment").on("click", function() {
         savePrincipalAssessment(false);
     });
     
-    // Submit button click
+    // Submit button click with validation
     $("#submitPrincipalAssessment").on("click", function() {
-        // Validate that we have a feedback entry
-        const feedback = $("#principalFeedback").val();
-        if (!feedback || feedback.trim() === '') {
-            alert("Please provide feedback before submitting.");
+        const validation = validatePrincipalAssessments();
+        
+        if (!validation.isValid) {
+            alert('Please fix the following errors before submitting:\n\n' + validation.errors.join('\n'));
             return;
         }
         
