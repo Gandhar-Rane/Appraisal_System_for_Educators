@@ -5978,6 +5978,7 @@ def generate_appraisal_html(user_id, form_id=None, acad_years=None):
     )
     
     # Attach the logo image to the email
+    # Attach the logo image to the email
     try:
         import os
         logo_path = os.path.join(os.path.dirname(__file__), 'static', 'logo.png')
@@ -5987,14 +5988,15 @@ def generate_appraisal_html(user_id, form_id=None, acad_years=None):
                     filename='logo.png',
                     content_type='image/png',
                     data=fp.read(),
-                    disposition='inline',
-                    headers={'Content-ID': '<logo>'}  # This allows referencing as cid:logo
+                    disposition='inline'
+                    # Remove the headers parameter entirely
                 )
                 print('[DEBUG] Logo attached to email successfully')
         else:
             print(f'[WARNING] Logo file not found at: {logo_path}')
     except Exception as e:
         print(f'[ERROR] Failed to attach logo: {str(e)}')
+
     
     mail.send(msg)
     return html_content 
