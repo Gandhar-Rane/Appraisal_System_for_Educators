@@ -561,20 +561,20 @@ def submit_academic_year():
         if existing_form:
             form_id = existing_form[0]
             
-            # **NEW CHECK: Prevent editing if form has been assessed by principal**
-            cursor.execute(
-                "SELECT principle_total FROM total WHERE user_id = %s AND form_id = %s AND acad_years = %s",
-                (user_id, form_id, selected_academic_year)
-            )
-            principal_assessment = cursor.fetchone()
+            # **COMMENTED OUT: Prevent editing if form has been assessed by principal**
+            # cursor.execute(
+            #     "SELECT principle_total FROM total WHERE user_id = %s AND form_id = %s AND acad_years = %s",
+            #     (user_id, form_id, selected_academic_year)
+            # )
+            # principal_assessment = cursor.fetchone()
             
-            if principal_assessment and principal_assessment[0] is not None and principal_assessment[0] != '':
-                # Form has been assessed by principal - prevent editing
-                connection.close()
-                return render_template('form_locked.html', 
-                                     message="Your appraisal form has been assessed by the Principal and cannot be edited.",
-                                     academic_year=selected_academic_year,
-                                     form_id=form_id)
+            # if principal_assessment and principal_assessment[0] is not None and principal_assessment[0] != '':
+            #     # Form has been assessed by principal - prevent editing
+            #     connection.close()
+            #     return render_template('form_locked.html', 
+            #                          message="Your appraisal form has been assessed by the Principal and cannot be edited.",
+            #                          academic_year=selected_academic_year,
+            #                          form_id=form_id)
 
             # Fetch existing teaching process data
             cursor.execute(
@@ -632,7 +632,6 @@ def submit_academic_year():
         feedback_data=feedback_data,
         academic_review_data=academic_review_data
     )
-
 
 
 @app.route('/form/<int:form_id>')
@@ -1720,9 +1719,12 @@ def review(form_id):
                 sql_total = """
                     INSERT INTO total (form_id, user_id, acad_years, total, name, dept)
                     VALUES (%s, %s, %s, %s, %s, %s)
-                    ON DUPLICATE KEY UPDATE total = VALUES(total), name = VALUES(name), dept = VALUES(dept)
+                    ON DUPLICATE KEY UPDATE 
+                        total = %s, 
+                        name = %s, 
+                        dept = %s
                 """
-                cursor.execute(sql_total, (form_id, user_id, selected_year, total_points, user_name, user_dept))
+                cursor.execute(sql_total, (form_id, user_id, selected_year, total_points, user_name, user_dept, total_points, user_name, user_dept))
 
                 # Commit the transaction
                 connection.commit()
@@ -1768,6 +1770,7 @@ def review(form_id):
         selected_year=selected_year,
         form_id=form_id
     )
+
 
 
 
@@ -7678,6 +7681,56 @@ def save_form3_data():
             cursor.close()
         if conn:
             conn.close()
+
+
+
+@app.route('/submit_review', methods=['POST'])
+def submit_review():
+    try:
+        # Get data from the request
+        data = request.json
+        user_id = data.get('user_id')
+        form_id = data.get('form_id')
+        acad_years = data.get('acad_years')
+        total_points = data.get('total_points')
+        name = data.get('name')
+        dept = data.get('dept')
+        
+        print(f"[SUBMIT DEBUG] Received data: user_id={user_id}, form_id={form_id}, total={total_points}")
+        
+        if not all([user_id, form_id, acad_years, total_points is not None, name, dept]):
+            return jsonify({'success': False, 'message': 'Missing required data'}), 400
+        
+        connection = connect_to_database()
+        with connection.cursor() as cursor:
+            # Insert or update the total in the 'total' table
+            sql_total = """
+                INSERT INTO total (form_id, user_id, acad_years, total, name, dept)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE 
+                    total = %s, 
+                    name = %s, 
+                    dept = %s
+            """
+            cursor.execute(sql_total, (form_id, user_id, acad_years, total_points, name, dept, total_points, name, dept))
+            
+            # Commit the transaction
+            connection.commit()
+            print(f"[SUBMIT DEBUG] Successfully saved total: {total_points}")
+            
+        connection.close()
+        
+        return jsonify({
+            'success': True, 
+            'message': 'Review submitted successfully!',
+            'total_points': total_points
+        })
+        
+    except Exception as e:
+        print(f"[SUBMIT DEBUG] Error in submit_review: {str(e)}")
+        print(f"[SUBMIT DEBUG] Exception traceback: {traceback.format_exc()}")
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
+
 
 
 @app.route('/reset-form2', methods=['POST'])

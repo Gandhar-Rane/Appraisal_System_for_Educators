@@ -1228,18 +1228,19 @@
                          <tr>
                              <th>Total</th>
                              <th>100</th>
-                             <th>
-                                 {{
-                                     (
-                                         points_data['teaching']|int +
-                                         points_data['feedback']|int +
-                                         points_data['dept']|int +
-                                         points_data['institute']|int +
-                                         points_data['acr']|int +
-                                         points_data['society']|int
-                                     )
-                                 }}
-                             </th>
+                             <th id="totalPoints">  <!-- NEW: Added this ID -->
+                                {{
+                                    (
+                                        points_data['teaching']|int +
+                                        points_data['feedback']|int +
+                                        points_data['dept']|int +
+                                        points_data['institute']|int +
+                                        points_data['acr']|int +
+                                        points_data['society']|int
+                                    )
+                                }}
+                            </th>
+                            
                          </tr>
                      </tbody>
                  </table>
@@ -1253,8 +1254,20 @@
 <pre></pre>
 <div class="text-center">
     <a href="{{ url_for('form3_page', form_id=form_id) }}" class="btn btn-secondary me-2">Back</a>
-    <button onclick="confirmSubmit()" class="btn btn-primary">Submit</button>
+    <button onclick="confirmSubmit()" class="btn btn-primary" id="submitBtn">Submit</button>
+<!-- NEW: Added id="submitBtn" -->
+
 </div>
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 5px; text-align: center;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-2">Submitting review...</p>
+    </div>
+</div>
+
 <pre></pre>
 
     <!-- Scripts -->
@@ -1281,6 +1294,100 @@
         }
 
     </script>
+
+
+<script type="text/javascript">
+    // Get the total points from the HTML and update the display
+    function getTotalPoints() {
+        try {
+            // Get values from template variables
+            const teaching = parseInt('{{ points_data.get("teaching", 0) }}') || 0;
+            const feedback = parseInt('{{ points_data.get("feedback", 0) }}') || 0;
+            const dept = parseInt('{{ points_data.get("dept", 0) }}') || 0;
+            const institute = parseInt('{{ points_data.get("institute", 0) }}') || 0;
+            const acr = parseInt('{{ points_data.get("acr", 0) }}') || 0;
+            const society = parseInt('{{ points_data.get("society", 0) }}') || 0;
+            
+            // Calculate total
+            const total = teaching + feedback + dept + institute + acr + society;
+            
+            // Update the total points display
+            const totalPointsElement = document.getElementById('totalPoints');
+            if (totalPointsElement) {
+                totalPointsElement.textContent = total;
+            }
+            
+            return total;
+        } catch (error) {
+            console.error('Error calculating total points:', error);
+            return 0;
+        }
+    }
+    
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        getTotalPoints();
+    });
+
+    // Confirm submit function
+    function confirmSubmit() {
+        if (confirm('Are you sure you want to submit this review? This action cannot be undone.')) {
+            submitReview();
+        }
+    }
+
+    // Submit review function
+    async function submitReview() {
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
+        // Disable button and show loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        loadingOverlay.style.display = 'flex';
+        
+        try {
+            const totalPoints = getTotalPoints();
+            
+            const response = await fetch('/submit_review', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: '{{ user_data[0] }}',
+                    form_id: '{{ form_id }}',
+                    acad_years: '{{ selected_year }}',
+                    total_points: totalPoints,
+                    name: '{{ user_data[3] }}',
+                    dept: '{{ user_data[2] }}'
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Review submitted successfully! Total points: ' + result.total_points);
+                // Redirect to a success page or back to landing
+                window.location.href = '/landing';
+            } else {
+                alert('Error: ' + result.message);
+            }
+            
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('An error occurred while submitting the review. Please try again.');
+        } finally {
+            // Re-enable button and hide loading
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit';
+            loadingOverlay.style.display = 'none';
+        }
+    }
+</script>
+
+
+
 
     <div class="footer">
         <p>Developed by Mayank Salvi, Aniruddha Sangle, and Gandhar Rane under the guidance of Prof. Vishal S. Badgujar. 
