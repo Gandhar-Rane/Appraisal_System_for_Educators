@@ -557,24 +557,23 @@ def submit_academic_year():
             (user_id, selected_academic_year),
         )
         existing_form = cursor.fetchone()
-
         if existing_form:
             form_id = existing_form[0]
             
-            # **COMMENTED OUT: Prevent editing if form has been assessed by principal**
-            # cursor.execute(
-            #     "SELECT principle_total FROM total WHERE user_id = %s AND form_id = %s AND acad_years = %s",
-            #     (user_id, form_id, selected_academic_year)
-            # )
-            # principal_assessment = cursor.fetchone()
+            cursor.execute(
+                "SELECT principle_total, hodtotal FROM total WHERE user_id = %s AND form_id = %s AND acad_years = %s",
+                (user_id, form_id, selected_academic_year)
+            )
+            totals = cursor.fetchone()
             
-            # if principal_assessment and principal_assessment[0] is not None and principal_assessment[0] != '':
-            #     # Form has been assessed by principal - prevent editing
-            #     connection.close()
-            #     return render_template('form_locked.html', 
-            #                          message="Your appraisal form has been assessed by the Principal and cannot be edited.",
-            #                          academic_year=selected_academic_year,
-            #                          form_id=form_id)
+            if totals and any(total is not None and total != '' for total in totals):
+                # Form has been assessed by principal or HOD - prevent editing
+                connection.close()
+                return render_template('form_locked.html', 
+                                    message="Your appraisal form has been assessed by the Principal or HOD and cannot be edited.",
+                                    academic_year=selected_academic_year,
+                                    form_id=form_id)
+
 
             # Fetch existing teaching process data
             cursor.execute(
