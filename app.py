@@ -5978,24 +5978,29 @@ def generate_appraisal_html(user_id, form_id=None, acad_years=None):
     )
     
     # Attach the logo image to the email
-    # Attach the logo image to the email
+   # Attach the logo image to the email for inline display
+    # Attach the logo image to the email for inline display
+    # Convert image to base64 and embed in HTML
     try:
         import os
+        import base64
+        
         logo_path = os.path.join(os.path.dirname(__file__), 'static', 'logo.png')
         if os.path.exists(logo_path):
             with open(logo_path, 'rb') as fp:
-                msg.attach(
-                    filename='logo.png',
-                    content_type='image/png',
-                    data=fp.read(),
-                    disposition='inline'
-                    # Remove the headers parameter entirely
-                )
-                print('[DEBUG] Logo attached to email successfully')
-        else:
-            print(f'[WARNING] Logo file not found at: {logo_path}')
+                logo_data = fp.read()
+                logo_b64 = base64.b64encode(logo_data).decode('utf-8')
+                
+            # Pass the base64 string to your template
+            html_content = render_template(
+                'email_appraisal_template.html',
+                # ... your other variables ...
+                logo_base64=logo_b64
+            )
     except Exception as e:
-        print(f'[ERROR] Failed to attach logo: {str(e)}')
+        print(f'[ERROR] Failed to process logo: {str(e)}')
+
+
 
     
     mail.send(msg)
