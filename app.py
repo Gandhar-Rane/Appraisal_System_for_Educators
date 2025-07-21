@@ -2337,6 +2337,9 @@ def search_pastforms():
         'hodfeed1': '', 'hodfeed2': '', 'hodfeed3': '', 'hodfeed4': '', 'hodfeed5': '', 'hodfeed6': '',
         'feedback': ''
     }
+    principal_assessments = {
+        'prinas1': 0, 'prinas2': 0, 'prinas3': 0, 'prinas4': 0, 'prinas5': 0, 'prinas6': 0
+    }
     finalacr_value = 0
     self_assessment_marks = ''
     profile_image = None
@@ -2527,21 +2530,21 @@ def search_pastforms():
                 self_assessment_marks = sa_result[0] if sa_result and sa_result[0] else ''
 
                 # ===== POINTS AND ASSESSMENTS DATA =====
-                # Fetch points for final score table
+                # Fetch points for final score table (UPDATED QUERIES)
                 cursor.execute("""
-                    SELECT teaching, feedback, hodas1, hodas2, hodfeed1, hodfeed2 
+                    SELECT teaching, feedback, hodas1, hodas2, hodfeed1, hodfeed2, prinas1, prinas2 
                     FROM form1_tot WHERE form_id = %s
                 """, (form_id,))
                 form1_tot = cursor.fetchone()
 
                 cursor.execute("""
-                    SELECT dept, institute, hodas3, hodas4, hodfeed3, hodfeed4 
+                    SELECT dept, institute, hodas3, hodas4, hodfeed3, hodfeed4, prinas3, prinas4 
                     FROM form2_tot WHERE form_id = %s
                 """, (form_id,))
                 form2_tot = cursor.fetchone()
 
                 cursor.execute("""
-                    SELECT acr, society, hodas5, hodas6, hodfeed5, hodfeed6, finalacr 
+                    SELECT acr, society, hodas5, hodas6, hodfeed5, hodfeed6, finalacr, prinas5, prinas6 
                     FROM form3_tot WHERE form_id = %s
                 """, (form_id,))
                 form3_tot = cursor.fetchone()
@@ -2556,7 +2559,7 @@ def search_pastforms():
                     'society': int(form3_tot[1]) if form3_tot and form3_tot[1] else 0,
                 }
 
-                # Populate assessments
+                # Populate HOD assessments
                 if form1_tot:
                     assessments.update({
                         'hodas1': int(form1_tot[2]) if form1_tot[2] is not None else 0,
@@ -2581,6 +2584,25 @@ def search_pastforms():
                         'hodfeed6': form3_tot[5] if form3_tot[5] else ''
                     })
                     finalacr_value = int(form3_tot[6]) if form3_tot and form3_tot[6] is not None else 0
+
+                # Populate Principal assessments
+                if form1_tot and len(form1_tot) > 6:
+                    principal_assessments.update({
+                        'prinas1': int(form1_tot[6]) if form1_tot[6] is not None else 0,
+                        'prinas2': int(form1_tot[7]) if form1_tot[7] is not None else 0,
+                    })
+
+                if form2_tot and len(form2_tot) > 6:
+                    principal_assessments.update({
+                        'prinas3': int(form2_tot[6]) if form2_tot[6] is not None else 0,
+                        'prinas4': int(form2_tot[7]) if form2_tot[7] is not None else 0,
+                    })
+
+                if form3_tot and len(form3_tot) > 7:
+                    principal_assessments.update({
+                        'prinas5': int(form3_tot[7]) if form3_tot[7] is not None else 0,
+                        'prinas6': int(form3_tot[8]) if form3_tot[8] is not None else 0,
+                    })
 
                 # Fetch general feedback
                 cursor.execute("SELECT feedback FROM feedback WHERE form_id = %s", (form_id,))
@@ -2698,6 +2720,7 @@ def search_pastforms():
         selected_year=selected_year,
         form_id=form_id,
         assessments=assessments,
+        principal_assessments=principal_assessments,  # ADDED THIS LINE
         finalacr_value=finalacr_value,
         self_assessment_marks=self_assessment_marks,
         str=str,
@@ -2705,6 +2728,7 @@ def search_pastforms():
         custom_table_title=custom_table_title,
         profile_image=profile_image
     )
+
 
 
 # Route to serve uploaded files - FIXED VERSION
