@@ -98,6 +98,65 @@
         .footer a:hover {
             text-decoration: underline;
         }
+
+
+        @media print {
+    .header, .sidebar, .footer, .navigation, .no-print {
+        display: none !important;
+    }
+    
+    .printable-content {
+        width: 150% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 24pt !important;
+        line-height: 1.4 !important;
+    }
+    
+    h1 { font-size: 24pt !important; }
+    h2 { font-size: 20pt !important; }
+    h3 { font-size: 18pt !important; }
+    h4 { font-size: 16pt !important; }
+    h5 { font-size: 14pt !important; }
+    h6 { font-size: 14pt !important; }
+    
+    p, div, span, td, th {
+        font-size: 12pt !important;
+    }
+    
+    table {
+        font-size: 15pt !important;
+    }
+}
+
+ /* Add these lines to fix the document column */
+ td button, td .btn, td a, td input {
+        display: inline-block !important;
+        visibility: visible !important;
+        font-size: 14pt !important;
+        color: black !important;
+        background: transparent !important;
+        border: 1pt solid black !important;
+        padding: 2pt 4pt !important;
+    }
+    
+    /* Show text content of interactive elements */
+    td button::after, td .btn::after {
+        content: attr(title) !important;
+    }
+    
+    /* Ensure table cells don't hide content */
+    td {
+        overflow: visible !important;
+        white-space: normal !important;
+    }
+
+
     </style>
 </head>
 <body>
@@ -107,6 +166,8 @@
         <a href="/logout">Logout</a>
     </div>
 
+
+   
     <!-- Logo -->
     <a href="/landing" class="logo-link">
         <img src="/static/logo.png" alt="Logo">
@@ -127,6 +188,8 @@
     </div>
  <pre></pre>
 
+
+ <div id="printableArea">
 <!-- Faculty Details Container - Only show when faculty_data is available -->
 {% if user_data %}
 <div class="container">
@@ -1411,9 +1474,11 @@
 
 <pre> </pre>
 
+</div>
+
 {% if user_data %}
 <div class="text-center">
-    <button id="printButton" onclick="window.print()" class="btn btn-success">Print</button>
+    <button onclick="printDiv('printableArea')" class="btn btn-primary">Print</button>
 </div>
 {% endif %}
 
@@ -1430,6 +1495,120 @@
 
     <!-- Script for dynamically generating academic years -->
     <script>
+
+
+
+
+function printDiv(divId) {
+    const printContent = document.getElementById(divId).cloneNode(true);
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    
+    // Copy all stylesheets
+    const stylesheets = Array.from(document.styleSheets);
+    let styles = '';
+    
+    stylesheets.forEach(sheet => {
+        try {
+            if (sheet.href) {
+                styles += `<link rel="stylesheet" type="text/css" href="${sheet.href}">`;
+            } else {
+                const rules = Array.from(sheet.cssRules || sheet.rules);
+                styles += '<style>';
+                rules.forEach(rule => {
+                    styles += rule.cssText;
+                });
+                styles += '</style>';
+            }
+        } catch (e) {
+            console.warn('Could not access stylesheet:', e);
+        }
+    });
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print</title>
+            ${styles}
+            <style>
+                body { 
+                    margin: 10px;
+                    font-size: 24pt;
+                    line-height: 1.4;
+                    font-family: Arial, sans-serif;
+                }
+                
+                h1 { font-size: 24pt; margin-bottom: 10pt; }
+                h2 { font-size: 20pt; margin-bottom: 8pt; }
+                h3 { font-size: 18pt; margin-bottom: 6pt; }
+                h4 { font-size: 16pt; margin-bottom: 6pt; }
+                h5 { font-size: 14pt; margin-bottom: 4pt; }
+                h6 { font-size: 14pt; margin-bottom: 4pt; }
+                
+                p, div, span { font-size: 12pt; }
+                
+                table { 
+                    font-size: 15pt; 
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                
+                th, td { 
+                    font-size: 15pt; 
+                    padding: 4pt;
+                    border: 1pt solid #000;
+                }
+                
+                th { 
+                    font-weight: bold; 
+                    background-color: #f0f0f0;
+                }
+                
+                @media print {
+                    body { 
+                        margin: 0; 
+                        font-size: 24pt;
+                    }
+                    
+                    h1 { font-size: 24pt; }
+                    h2 { font-size: 20pt; }
+                    h3 { font-size: 18pt; }
+                    h4 { font-size: 16pt; }
+                    h5 { font-size: 14pt; }
+                    h6 { font-size: 14pt; }
+                    
+                    p, div, span, td, th { font-size: 15pt; }
+                    table { font-size: 15pt; }
+                }
+            </style>
+        </head>
+        <body>
+            ${printContent.outerHTML}
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    
+    // Wait for the content to load before printing
+    printWindow.onload = function() {
+        setTimeout(function() {
+            printWindow.focus();
+            printWindow.print();
+        }, 250);
+    };
+    
+    // Fallback for older browsers
+    setTimeout(function() {
+        printWindow.focus();
+        printWindow.print();
+    }, 500);
+}
+
+
+
+
+
+
        function generateAcademicYears() {
     const today = new Date();
     const currentYear = today.getFullYear();
